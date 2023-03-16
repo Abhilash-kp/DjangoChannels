@@ -1,0 +1,103 @@
+<!-- chat/templates/chat/room.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Chat Room</title>
+</head>
+<body>
+
+    <div>
+        <h1>Current request.path {{ request.path }}</h1>
+{% if user.is_authenticated %}
+<p>Authenticated as
+<pre>
+Name: {{ user.username }}
+Id: {{ user.id }}
+</pre>
+
+</p>
+<p>You can <a href="{% url 'logout' %}?next={% url 'general' %}">Logout</a></p>
+{% else %}
+<p>You are not logged in</p>
+<p>You can <a href="{% url 'login' %}?next={{ request.path }}">Login</a> if you like.</p>
+{% endif %}
+
+
+    </div>
+
+
+    <div>
+        <p>You can see the buttonclicks report <a href="{% url 'chat:report' %}">Here</a></p>
+    </div>
+    <textarea id="chat-log" cols="100" rows="20"></textarea><br>
+    <div>
+        <button id="fat-button" type="button">fat</button>
+    </div>
+    <br>
+
+    <div>
+        <button id="stupid-button" type="button">stupid</button>
+    </div>
+    <br>
+
+    <div>
+        <button id="dumb-button" type="button">dumb</button>
+    </div>
+
+    {{ room_name|json_script:"room-name" }}
+    <script>
+
+        const chatSocket = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/chat/'
+        );
+
+        chatSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            document.querySelector('#chat-log').value += (data.text + '\n');
+        };
+
+        chatSocket.onclose = function(e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+
+
+
+        document.querySelector('#fat-button').onclick = function(e) {
+            const log = document.getElementById('chat-log')
+            log.value = ''
+            const messageInputDom = document.querySelector('#fat-button');
+            const message = messageInputDom.innerHTML;
+            chatSocket.send(JSON.stringify({
+                'text': message
+            }));
+
+        };
+
+        document.querySelector('#stupid-button').onclick = function(e) {
+            const log = document.getElementById('chat-log')
+            log.value = ''
+            const messageInputDom = document.querySelector('#stupid-button');
+            const message = messageInputDom.innerHTML;
+            chatSocket.send(JSON.stringify({
+                'text': message
+            }));
+
+        };
+
+        document.querySelector('#dumb-button').onclick = function(e) {
+            const log = document.getElementById('chat-log')
+            log.value = ''
+            const messageInputDom = document.querySelector('#dumb-button');
+            const message = messageInputDom.innerHTML;
+            chatSocket.send(JSON.stringify({
+                'text': message
+            }));
+
+        };
+
+    </script>
+</body>
+</html>

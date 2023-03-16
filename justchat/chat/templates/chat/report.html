@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Report Page</title>
+</head>
+<body>
+
+<table style="border: 1px solid black;border-collapse: collapse;">
+
+
+  <tr style="border: 1px solid black;border-collapse: collapse;">
+    <th style="border: 1px solid black;border-collapse: collapse;">User</th>
+    <th style="border: 1px solid black;border-collapse: collapse;">FatButtonCLicks</th>
+      <th style="border: 1px solid black;border-collapse: collapse;">DumbButtonClicks</th>
+    <th style="border: 1px solid black;border-collapse: collapse;">StupidButtonClicks</th>
+  </tr>
+  {% for data in obj %}
+  <tr style="border: 1px solid black;border-collapse: collapse;">
+    <td style="border: 1px solid black;border-collapse: collapse;">{{ data.user.username }}</td>
+    <td style="border: 1px solid black;border-collapse: collapse;">{{ data.fatbuttonclicks }}</td>
+    <td style="border: 1px solid black;border-collapse: collapse;">{{ data.dumbbuttonclicks }}</td>
+    <td style="border: 1px solid black;border-collapse: collapse;">{{ data.stupidbuttonclicks }}</td>
+  </tr>
+ {% endfor %}
+</table>
+
+</body>
+</html>

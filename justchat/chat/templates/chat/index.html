@@ -1,0 +1,45 @@
+<!-- chat/templates/chat/index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Chat Rooms</title>
+</head>
+<body>
+
+<h1>Current request.path {{ request.path }}</h1>
+{% if user.is_authenticated %}
+<p>Authenticated as
+<pre>
+Name: {{ user.username }}
+Id: {{ user.id }}
+</pre>
+
+</p>
+<p>You can <a href="{% url 'logout' %}?next={% url 'general' %}">Logout</a></p>
+{% else %}
+<p>You are not logged in</p>
+<p>You can <a href="{% url 'login' %}?next={{ request.path }}">Login</a> if you like.</p>
+{% endif %}
+<ul>
+
+
+    What chat room would you like to enter?<br>
+    <input id="room-name-input" type="text" size="100"><br>
+    <input id="room-name-submit" type="button" value="Enter">
+
+    <script>
+        document.querySelector('#room-name-input').focus();
+        document.querySelector('#room-name-input').onkeyup = function(e) {
+            if (e.keyCode === 13) {  // enter, return
+                document.querySelector('#room-name-submit').click();
+            }
+        };
+
+        document.querySelector('#room-name-submit').onclick = function(e) {
+            var roomName = document.querySelector('#room-name-input').value;
+            window.location.pathname = '/chat/' + roomName + '/';
+        };
+    </script>
+</body>
+</html>
